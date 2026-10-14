@@ -3,7 +3,7 @@
  * Mengelola komunikasi HTTP ke Backend Laravel API dengan token Sanctum
  */
 
-const API_BASE_URL = window.API_BASE_URL || 'http://localhost:8000/api';
+const API_BASE_URL = window.API_BASE_URL || '/api';
 
 const api = {
   baseUrl: API_BASE_URL,
@@ -53,7 +53,7 @@ const api = {
               window.location.pathname.includes('/buyer/')) {
             localStorage.removeItem('kadin_token');
             localStorage.removeItem('kadin_user');
-            window.location.href = '/frontend/login.html';
+            window.location.href = '/login.html';
           }
         }
         

@@ -316,7 +316,7 @@ Silakan pilih UMKM di panel samping lalu kirim foto produk untuk memulai simulas
         btnKirim.disabled = true;
 
         try {
-          const endpointUrl = `${api.baseUrl || 'http://localhost:8000/api'}/wablas/webhook`;
+          const endpointUrl = `${api.baseUrl || '/api'}/wablas/webhook`;
           const response = await fetch(endpointUrl, {
             method: 'POST',
             body: formData,
@@ -420,7 +420,7 @@ Silakan pilih UMKM di panel samping lalu kirim foto produk untuk memulai simulas
           const fd = new FormData();
           fd.append('phone', nomor);
           fd.append('message', 'BATAL');
-          await fetch(`${api.baseUrl || 'http://localhost:8000/api'}/wablas/webhook`, {
+          await fetch(`${api.baseUrl || '/api'}/wablas/webhook`, {
             method: 'POST',
             body: fd,
             headers: { 'Accept': 'application/json' }

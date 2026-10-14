@@ -18,25 +18,20 @@ Platform ini mengintegrasikan 4 pilar inovasi:
 
 ## 🏗️ 2. Arsitektur Sistem & Tech Stack
 
-Sistem dibangun menggunakan **Decoupled Architecture** (Frontend & Backend terpisah) yang ringan, cepat, dan mudah di-maintain.
+Sistem dibangun menggunakan **Unified Architecture** (Frontend & Backend terintegrasi dalam 1 aplikasi Laravel) yang ringan, cepat, tanpa kendala CORS, dan mudah di-maintain. Cukup menjalankan satu server Laravel (`php artisan serve`), seluruh portal frontend dan backend REST API langsung aktif bersamaan.
 
 ```
 +-------------------------------------------------------------------------+
-|                              FRONTEND                                   |
-|   - Vanilla JavaScript Modern (Fetch API, Token Auth, Reusable UI Hub)  |
-|   - Vanilla CSS Modern (Design Tokens, Glassmorphism, Responsive UI)    |
-|   - Multi-Portal: Publik, UMKM Hub, Buyer Portal, Admin KADIN Panel     |
-+------------------------------------+------------------------------------+
-                                     |  REST API (JSON) + Bearer Token
-                                     v
-+------------------------------------+------------------------------------+
-|                               BACKEND                                   |
-|   - Framework : Laravel (PHP 8.2+)                                      |
-|   - Auth      : Laravel Sanctum (Token-Based Auth + Role Middleware)    |
-|   - Database  : SQLite / MySQL (Eloquent ORM, Migrations, Seeders)      |
-|   - AI Engine : OpenRouter API (LLM Smart Recommendation & Matching)    |
-|   - WA Gateway: Wablas API (Conversational Bot & Push Notifications)    |
+|                    KAADIN UNIFIED MONOLITH (LARAVEL)                    |
+|                                                                         |
+|  [ FRONTEND ASSETS & PAGES ]           [ BACKEND REST API & LOGIC ]     |
+|  - HTML5 & Clean Routing (web.php)     - Laravel Sanctum (Token Auth)   |
+|  - Vanilla JS Modern (/js/api.js)      - Eloquent ORM & SQLite/MySQL    |
+|  - Modern CSS (/css/app.css)           - AI OpenRouter Matchmaking      |
+|  - Portals: Publik, UMKM, Buyer, Admin - WhatsApp Gateway (Wablas/WAHA) |
 +-------------------------------------------------------------------------+
+                    Dijalankan pada 1 Server Tunggal
+                       http://127.0.0.1:8000
 ```
 
 ### 💻 Rincian Teknologi:
@@ -195,67 +190,51 @@ KAADIN_V0.1/
 
 ---
 
-### ⚙️ A. Menjalankan Backend (Laravel)
+### ⚙️ Menjalankan Aplikasi (Hanya 1 Server!)
 
-1. Buka terminal dan masuk ke folder `backend`:
-   ```bash
-   cd backend
-   ```
+Frontend dan Backend kini telah **disatukan**. Anda hanya perlu menjalankan satu perintah dari root folder proyek (`KAADIN_V0.1`):
 
-2. Salin file `.env` (jika belum ada):
+1. **Salin file `.env` (jika belum ada)**:
    ```bash
    cp .env.example .env
    ```
 
-3. Install dependensi composer:
+2. **Install dependensi composer**:
    ```bash
    composer install
    ```
 
-4. Generate Application Key:
+3. **Generate Application Key**:
    ```bash
    php artisan key:generate
    ```
 
-5. Buat file database SQLite (jika menggunakan driver SQLite):
+4. **Inisialisasi Database SQLite & Data Seeding** (Opsional jika ingin reset data):
    ```bash
    # Windows PowerShell
    New-Item -ItemType File -Path database\database.sqlite -Force
-   ```
-
-6. Jalankan migrasi dan seeding data default:
-   ```bash
    php artisan migrate:fresh --seed
    ```
 
-7. Buat symbolic link untuk upload gambar publik:
+5. **Hubungkan Symlink Penyimpanan Media**:
    ```bash
    php artisan storage:link
    ```
 
-8. Jalankan development server backend:
+6. **Jalankan Aplikasi**:
    ```bash
    php artisan serve --port=8000
    ```
-   > Backend API akan aktif di: `http://127.0.0.1:8000`
 
----
-
-### 🌐 B. Menjalankan Frontend
-
-Jalankan web server sederhana untuk folder `frontend`. Anda dapat menggunakan salah satu cara berikut:
-
-**Opsi 1: Menggunakan PHP Built-in Server (Rekomendasi)**
-```bash
-# Dari root proyek (KAADIN_V0.1):
-php -S 127.0.0.1:5500 -t frontend
-```
-
-**Opsi 2: Menggunakan VS Code Live Server**
-- Buka folder `frontend` di VS Code / IDE.
-- Klik kanan `index.html` -> *Open with Live Server* (Port default `5500`).
-
-> Akses Frontend di browser melalui: `http://127.0.0.1:5500/`
+> 🌐 **Akses Aplikasi di Browser**:
+> - **Landing Page & Beranda**: `http://127.0.0.1:8000/`
+> - **Katalog Produk**: `http://127.0.0.1:8000/katalog` (atau `/katalog.html`)
+> - **Login Portal**: `http://127.0.0.1:8000/login` (atau `/login.html`)
+> - **Registrasi UMKM**: `http://127.0.0.1:8000/register-umkm`
+> - **Portal UMKM**: `http://127.0.0.1:8000/umkm/dashboard`
+> - **Portal Buyer**: `http://127.0.0.1:8000/buyer/dashboard`
+> - **Admin KADIN**: `http://127.0.0.1:8000/admin/dashboard`
+> - **REST API**: `http://127.0.0.1:8000/api/...`
 
 ---
 
@@ -329,7 +308,7 @@ Semua akun pengujian di bawah ini memiliki password default: **`password`**
 
 ## 🔒 10. Konfigurasi Environment Tambahan (`.env`)
 
-Untuk mengaktifkan fitur AI dan WhatsApp Gateway secara penuh di lingkungan produksi, tambahkan variabel berikut di `backend/.env`:
+Untuk mengaktifkan fitur AI dan WhatsApp Gateway secara penuh di lingkungan produksi, tambahkan variabel berikut di `.env`:
 
 ```env
 # OpenRouter AI API Configuration
