@@ -15,7 +15,7 @@ class AuthTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seed(\Database\Seeders\DemoSeeder::class);
     }
 
     public function test_user_can_login_with_valid_credentials_and_receive_sanctum_token(): void

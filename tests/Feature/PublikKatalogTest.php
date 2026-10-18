@@ -14,7 +14,7 @@ class PublikKatalogTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seed(\Database\Seeders\DemoSeeder::class);
     }
 
     public function test_public_can_access_katalog_without_authentication(): void

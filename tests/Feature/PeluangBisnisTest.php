@@ -16,7 +16,7 @@ class PeluangBisnisTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seed(\Database\Seeders\DemoSeeder::class);
     }
 
     public function test_buyer_can_publish_new_rfq_and_view_own_dashboard(): void

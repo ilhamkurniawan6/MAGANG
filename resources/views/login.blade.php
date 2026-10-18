@@ -6,7 +6,7 @@
   <title>Masuk Sistem - KADIN Digital Hub</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="css/app.css">
+  @vite(['resources/css/kadin.css', 'resources/js/app.js'])
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
 
@@ -90,9 +90,6 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/ui.js"></script>
   <script>
     function fillLogin(email, password) {
       document.getElementById('emailInput').value = email;

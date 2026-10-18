@@ -16,7 +16,7 @@ class ProgramTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seed(\Database\Seeders\DemoSeeder::class);
     }
 
     public function test_public_can_view_published_programs(): void

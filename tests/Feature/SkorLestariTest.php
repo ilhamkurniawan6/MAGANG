@@ -15,7 +15,7 @@ class SkorLestariTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seed(\Database\Seeders\DemoSeeder::class);
     }
 
     public function test_umkm_can_view_own_skor_lestari_breakdown(): void

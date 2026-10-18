@@ -6,7 +6,7 @@
   <title>Skor KADIN Lestari - UMKM Hub</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="../css/app.css">
+  @vite(['resources/css/kadin.css', 'resources/js/app.js'])
 </head>
 <body>
 
@@ -210,9 +210,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/api.js"></script>
-  <script src="../js/auth.js"></script>
-  <script src="../js/ui.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       if (!auth.guard(['umkm'])) return;

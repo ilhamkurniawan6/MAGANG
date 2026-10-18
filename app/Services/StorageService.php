@@ -9,16 +9,14 @@ use Illuminate\Support\Str;
 class StorageService
 {
     /**
-     * Dapatkan disk aktif (MinIO/S3 jika env terisi, fallback ke public lokal)
+     * Dapatkan disk aktif (MinIO jika konfigurasi terisi, fallback ke public lokal)
      */
     public function getActiveDisk(): string
     {
-        $minioEndpoint = env('MINIO_ENDPOINT');
-        $minioKey = env('MINIO_KEY') ?? env('AWS_ACCESS_KEY_ID');
-        $minioBucket = env('MINIO_BUCKET') ?? env('AWS_BUCKET');
+        $minio = config('filesystems.disks.minio');
 
-        if (!empty($minioEndpoint) && !empty($minioKey) && !empty($minioBucket)) {
-            return 's3';
+        if (!empty($minio['endpoint']) && !empty($minio['key']) && !empty($minio['bucket'])) {
+            return 'minio';
         }
 
         return 'public';
