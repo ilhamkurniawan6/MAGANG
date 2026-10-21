@@ -32,7 +32,8 @@ class StorageService
         $fileName = Str::uuid() . '.' . $extension;
         $path = $folder . '/' . $fileName;
 
-        Storage::disk($disk)->put($path, file_get_contents($file), 'public');
+        $opts = ($disk === 'minio' && !config('filesystems.disks.minio.use_acl', true)) ? [] : 'public';
+        Storage::disk($disk)->put($path, file_get_contents($file), $opts);
 
         return $path;
     }

@@ -259,7 +259,9 @@
           btn.addEventListener('click', async () => {
             const id = btn.getAttribute('data-id');
             const name = btn.getAttribute('data-name');
-            if (!confirm(`Hapus program "${name}"? Data pendaftaran terkait akan ikut terhapus.`)) return;
+            if (!(await ui.confirm(`Hapus program "${name}"? Data pendaftaran terkait akan ikut terhapus.`, {
+              title: 'Hapus Program', confirmText: 'Ya, hapus', variant: 'danger'
+            }))) return;
 
             try {
               await api.delete(`/admin/program/${id}`);

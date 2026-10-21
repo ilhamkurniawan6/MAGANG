@@ -168,9 +168,9 @@
           console.error('Error simpan produk:', err);
           let msg = err.message || 'Gagal menyimpan produk.';
           if (err.errors) {
-            msg = Object.values(err.errors).flat().join('<br>');
+            msg = Object.values(err.errors).flat().join(' ');
           }
-          alert(msg);
+          ui.toast(msg, 'danger');
         } finally {
           btn.disabled = false;
           btn.innerHTML = 'Simpan Produk';
@@ -261,12 +261,14 @@
         modalInstance.show();
       } catch (err) {
         console.error('Error load detail produk:', err);
-        alert('Gagal mengambil data produk.');
+        ui.toast('Gagal mengambil data produk.', 'danger');
       }
     }
 
     async function hapusProduk(id) {
-      if (!confirm('Apakah Anda yakin ingin menghapus produk ini?')) return;
+      if (!(await ui.confirm('Apakah Anda yakin ingin menghapus produk ini?', {
+        title: 'Hapus Produk', confirmText: 'Ya, hapus', variant: 'danger'
+      }))) return;
 
       try {
         await api.delete(`/umkm/produk/${id}`);
@@ -274,7 +276,7 @@
         loadProdukList();
       } catch (err) {
         console.error('Error delete produk:', err);
-        alert(err.message || 'Gagal menghapus produk.');
+        ui.toast(err.message || 'Gagal menghapus produk.', 'danger');
       }
     }
   </script>

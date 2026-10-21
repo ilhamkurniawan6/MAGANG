@@ -235,7 +235,13 @@
         ? 'Apakah Anda yakin ingin menyetujui produk ini agar tayang di etalase publik?' 
         : 'Apakah Anda yakin ingin menolak pengajuan produk ini?';
 
-      if (!confirm(confirmMsg)) return;
+      const setuju = status === 'disetujui';
+      const ok = await ui.confirm(confirmMsg, {
+        title: setuju ? 'Setujui Produk' : 'Tolak Produk',
+        confirmText: setuju ? 'Ya, setujui' : 'Ya, tolak',
+        variant: setuju ? 'success' : 'danger'
+      });
+      if (!ok) return;
 
       try {
         await api.post(`/admin/produk/${selectedProdukId}/moderasi`, { status });
@@ -244,7 +250,7 @@
         loadProdukList();
       } catch (err) {
         console.error('Error submit moderasi:', err);
-        alert(err.message || 'Gagal memproses moderasi produk.');
+        ui.toast(err.message || 'Gagal memproses moderasi produk.', 'danger');
       }
     }
   </script>

@@ -115,8 +115,8 @@
       const umkmId = urlParams.get('id');
 
       if (!umkmId) {
-        alert('ID UMKM tidak valid.');
-        window.location.href = 'katalog.html';
+        ui.toast('ID UMKM tidak valid.', 'warning');
+        setTimeout(() => { window.location.href = 'katalog.html'; }, 1500);
         return;
       }
 
@@ -125,8 +125,8 @@
         const u = res.data;
 
         if (!u) {
-          alert('UMKM tidak ditemukan atau belum terverifikasi');
-          window.location.href = 'katalog.html';
+          ui.toast('UMKM tidak ditemukan atau belum terverifikasi', 'warning');
+          setTimeout(() => { window.location.href = 'katalog.html'; }, 1500);
           return;
         }
 
@@ -208,7 +208,7 @@
 
       } catch (err) {
         console.error('Error load profil UMKM:', err);
-        alert('Gagal memuat profil UMKM.');
+        ui.toast('Gagal memuat profil UMKM.', 'danger');
       }
     });
   </script>

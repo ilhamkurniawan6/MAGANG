@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\CheckRole::class,
         ]);
         
+        // Di balik proxy hosting (Render dsb): percayai header HTTPS agar URL & asset tidak http
+        $middleware->trustProxies(at: '*');
+
         // Ensure stateful API responses use CORS
         $middleware->statefulApi();
     })

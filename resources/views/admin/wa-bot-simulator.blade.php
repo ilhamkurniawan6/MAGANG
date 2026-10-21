@@ -348,7 +348,7 @@ Silakan pilih UMKM di panel samping lalu kirim foto produk untuk memulai simulas
         const text = inputPesan.value.trim();
         const nomor = inputNomor.value.trim();
         if (!text || !nomor) {
-          alert('Pilih UMKM atau isi nomor pengirim terlebih dahulu.');
+          ui.toast('Pilih UMKM atau isi nomor pengirim terlebih dahulu.', 'warning');
           return;
         }
 
@@ -374,7 +374,7 @@ Silakan pilih UMKM di panel samping lalu kirim foto produk untuk memulai simulas
         const file = fileInput.files[0];
         const nomor = inputNomor.value.trim();
         if (!nomor) {
-          alert('Masukkan nomor WA pengirim terlebih dahulu.');
+          ui.toast('Masukkan nomor WA pengirim terlebih dahulu.', 'warning');
           return;
         }
 
@@ -397,7 +397,7 @@ Silakan pilih UMKM di panel samping lalu kirim foto produk untuk memulai simulas
       window.kirimContohFoto = async (url) => {
         const nomor = inputNomor.value.trim();
         if (!nomor) {
-          alert('Pilih UMKM pengirim terlebih dahulu.');
+          ui.toast('Pilih UMKM pengirim terlebih dahulu.', 'warning');
           return;
         }
 

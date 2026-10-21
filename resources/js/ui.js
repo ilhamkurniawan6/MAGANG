@@ -254,10 +254,71 @@ const ui = {
   },
 
   /**
-   * Helper alias for toast notification
+   * Dialog konfirmasi bergaya aplikasi (pengganti window.confirm)
+   * Pemakaian: if (!(await ui.confirm('Hapus produk ini?', { variant: 'danger', confirmText: 'Ya, hapus' }))) return;
+   */
+  confirm(message, { title = 'Konfirmasi', confirmText = 'Ya, lanjutkan', cancelText = 'Batal', variant = 'primary' } = {}) {
+    if (typeof bootstrap === 'undefined') return Promise.resolve(window.confirm(message));
+    return new Promise((resolve) => {
+      const id = 'ui-confirm-modal';
+      document.getElementById(id)?.remove();
+      document.body.insertAdjacentHTML('beforeend', `
+        <div class="modal fade" id="${id}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius:16px">
+              <div class="modal-body p-4 text-center">
+                <h5 class="fw-bold mb-2" data-role="title"></h5>
+                <p class="text-muted mb-4" style="white-space:pre-line" data-role="message"></p>
+                <div class="d-flex gap-2 justify-content-center">
+                  <button type="button" class="btn btn-light px-4" data-role="cancel"></button>
+                  <button type="button" class="btn btn-${variant} px-4" data-role="ok"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`);
+      const el = document.getElementById(id);
+      el.querySelector('[data-role=title]').textContent = title;
+      el.querySelector('[data-role=message]').textContent = message;
+      el.querySelector('[data-role=cancel]').textContent = cancelText;
+      el.querySelector('[data-role=ok]').textContent = confirmText;
+      el.style.zIndex = 1065; // di atas modal lain yang sedang terbuka
+      let result = false;
+      const modal = new bootstrap.Modal(el);
+      el.querySelector('[data-role=ok]').onclick = () => { result = true; modal.hide(); };
+      el.querySelector('[data-role=cancel]').onclick = () => modal.hide();
+      el.addEventListener('shown.bs.modal', () => {
+        const b = document.querySelectorAll('.modal-backdrop');
+        b[b.length - 1]?.style.setProperty('z-index', '1060');
+      }, { once: true });
+      el.addEventListener('hidden.bs.modal', () => { el.remove(); resolve(result); }, { once: true });
+      modal.show();
+    });
+  },
+
+  /**
+   * Toast melayang di pojok kanan atas (pengganti window.alert)
+   * type: success | danger | warning | info
    */
   toast(message, type = 'success') {
-    this.showAlert(message, type);
+    if (typeof bootstrap === 'undefined') { this.showAlert(message, type); return; }
+    let box = document.getElementById('ui-toast-box');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'ui-toast-box';
+      box.className = 'toast-container position-fixed top-0 end-0 p-3';
+      box.style.zIndex = 2000;
+      document.body.appendChild(box);
+    }
+    const bg = { success: 'text-bg-success', danger: 'text-bg-danger', warning: 'text-bg-warning', info: 'text-bg-info' }[type] || 'text-bg-success';
+    const el = document.createElement('div');
+    el.className = `toast align-items-center border-0 ${bg}`;
+    el.setAttribute('role', 'alert');
+    el.innerHTML = `<div class="d-flex"><div class="toast-body"></div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Tutup"></button></div>`;
+    el.querySelector('.toast-body').textContent = message;
+    box.appendChild(el);
+    el.addEventListener('hidden.bs.toast', () => el.remove());
+    new bootstrap.Toast(el, { delay: 4000 }).show();
   },
 
   /**

@@ -112,8 +112,8 @@ const auth = {
     const roleName = (user.role?.nama_role || '').toLowerCase();
 
     if (allowedRoles.length > 0 && !allowedRoles.map(r => r.toLowerCase()).includes(roleName)) {
-      alert('Akses tidak diizinkan untuk peran ini.');
-      window.location.href = this.getDashboardUrl(roleName);
+      window.ui?.toast('Akses tidak diizinkan untuk peran ini.', 'danger');
+      setTimeout(() => { window.location.href = this.getDashboardUrl(roleName); }, 1500);
       return false;
     }
 

@@ -106,8 +106,8 @@
       const produkId = urlParams.get('id');
 
       if (!produkId) {
-        alert('Produk tidak ditemukan');
-        window.location.href = 'katalog.html';
+        ui.toast('Produk tidak ditemukan', 'warning');
+        setTimeout(() => { window.location.href = 'katalog.html'; }, 1500);
         return;
       }
 

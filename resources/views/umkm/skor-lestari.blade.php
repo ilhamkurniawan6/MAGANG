@@ -234,7 +234,7 @@
           loadSkorLestari();
         } catch (err) {
           console.error('Error save praktik:', err);
-          alert(err.message || 'Gagal menyimpan praktik ramah lingkungan.');
+          ui.toast(err.message || 'Gagal menyimpan praktik ramah lingkungan.', 'danger');
         } finally {
           btn.disabled = false;
           btn.innerHTML = '<i class="bi bi-floppy me-1"></i> Simpan Pilihan Praktik Ramah Lingkungan';

@@ -247,7 +247,9 @@
       }
 
       window.daftarProgram = async (programId, nama) => {
-        if (!confirm(`Konfirmasi pendaftaran program "${nama || ''}"?`)) return;
+        if (!(await ui.confirm(`Konfirmasi pendaftaran program "${nama || ''}"?`, {
+          title: 'Daftar Program', confirmText: 'Ya, daftar'
+        }))) return;
         try {
           await api.post(`/umkm/program/${programId}/daftar`, {});
           ui.showAlert('Pendaftaran program berhasil!', 'success');

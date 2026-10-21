@@ -245,7 +245,13 @@
         ? 'Apakah Anda yakin ingin menyetujui (VERIFY) UMKM ini?' 
         : 'Apakah Anda yakin ingin menolak (REJECT) pendaftaran UMKM ini?';
 
-      if (!confirm(confirmMsg)) return;
+      const verif = status === 'verified';
+      const ok = await ui.confirm(confirmMsg, {
+        title: verif ? 'Verifikasi UMKM' : 'Tolak UMKM',
+        confirmText: verif ? 'Ya, verifikasi' : 'Ya, tolak',
+        variant: verif ? 'success' : 'danger'
+      });
+      if (!ok) return;
 
       try {
         await api.post(`/admin/umkm/${selectedUmkmId}/verifikasi`, { status_verifikasi: status });
@@ -254,7 +260,7 @@
         loadUmkmList();
       } catch (err) {
         console.error('Error submit verifikasi:', err);
-        alert(err.message || 'Gagal memproses verifikasi UMKM.');
+        ui.toast(err.message || 'Gagal memproses verifikasi UMKM.', 'danger');
       }
     }
   </script>
