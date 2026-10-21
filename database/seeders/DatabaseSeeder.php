@@ -3,24 +3,19 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Services\SkorLestariService;
 
 class DatabaseSeeder extends Seeder
 {
+    /**
+     * Hanya data dasar (role, kategori, akun admin). Data UMKM/produk/program kosong.
+     * Data contoh: php artisan db:seed --class=DemoSeeder
+     */
     public function run(): void
     {
         $this->call([
             RoleSeeder::class,
             KategoriSeeder::class,
-            UserSeeder::class,
-            UmkmSeeder::class,
-            ProdukSeeder::class,
-            CatatanPembinaanSeeder::class,
-            ProgramSeeder::class,
-            PeluangBisnisSeeder::class,
+            AdminSeeder::class,
         ]);
-
-        // Hitung ulang Skor KADIN Lestari untuk semua UMKM binaan
-        app(SkorLestariService::class)->hitungUlangSemua();
     }
 }

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skor KADIN Lestari - UMKM Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  @vite(['resources/css/kadin.css', 'resources/js/app.js'])
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <div id="sidebar-container"></div>
+
+    <div class="dashboard-main">
+      <div id="topbar-container"></div>
+
+      <main class="dashboard-content">
+        <div id="alert-container"></div>
+
+        <!-- Header -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+          <div>
+            <h1 class="h4 fw-bold text-navy mb-1">Indeks Keberlanjutan & Skor KADIN Lestari</h1>
+            <p class="text-secondary small mb-0">Penilaian holistik yang memadukan pertumbuhan usaha, intensitas pendampingan, dan kepedulian lingkungan.</p>
+          </div>
+          <div id="headerBadgeLevel"></div>
+        </div>
+
+        <!-- Main Score Hero Card -->
+        <div class="row g-4 mb-4">
+          <div class="col-lg-5">
+            <div class="card-clean p-4 h-100 text-center bg-white d-flex flex-column justify-content-center">
+              <div class="small text-uppercase text-secondary fw-semibold mb-2" style="letter-spacing: 0.05em;">Total Skor KADIN Lestari</div>
+              <div class="display-3 fw-bold text-navy mb-2" id="scoreNumber">-</div>
+              <div class="mb-3" id="scoreLevelBadge">-</div>
+              <p class="small text-muted mb-0" id="calcTime">Terakhir dihitung: -</p>
+            </div>
+          </div>
+
+          <div class="col-lg-7">
+            <div class="card-clean p-4 h-100 bg-white">
+              <h5 class="fw-bold text-navy mb-3" style="font-size: 1.05rem;">
+                <i class="bi bi-pie-chart-fill text-warning me-1"></i> Rincian 3 Komponen Penilaian
+              </h5>
+
+              <!-- Komponen 1: Pertumbuhan Usaha -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between small fw-semibold mb-1">
+                  <span>1. Pertumbuhan Usaha (Bobot 40%)</span>
+                  <span id="scoreKomp1Text">0 / 100</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div class="progress-bar bg-primary" id="progressKomp1" style="width: 0%"></div>
+                </div>
+                <small class="text-muted" id="detailKomp1">-</small>
+              </div>
+
+              <!-- Komponen 2: Intensitas Pembinaan -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between small fw-semibold mb-1">
+                  <span>2. Intensitas Pembinaan & Partisipasi (Bobot 30%)</span>
+                  <span id="scoreKomp2Text">0 / 100</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div class="progress-bar bg-warning" id="progressKomp2" style="width: 0%"></div>
+                </div>
+                <small class="text-muted" id="detailKomp2">-</small>
+              </div>
+
+              <!-- Komponen 3: Praktik Ramah Lingkungan -->
+              <div class="mb-2">
+                <div class="d-flex justify-content-between small fw-semibold mb-1">
+                  <span>3. Praktik Ramah Lingkungan (Bobot 30%)</span>
+                  <span id="scoreKomp3Text">0 / 100</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div class="progress-bar bg-success" id="progressKomp3" style="width: 0%"></div>
+                </div>
+                <small class="text-muted" id="detailKomp3">-</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Klaim Praktik Ramah Lingkungan -->
+        <div class="row g-4">
+          <div class="col-lg-7">
+            <div class="card-clean p-4 bg-white">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-navy mb-0" style="font-size: 1.05rem;">
+                  <i class="bi bi-tree-fill text-success me-1"></i> Klaim Praktik Ramah Lingkungan
+                </h5>
+                <span id="verifStatusBadge"></span>
+              </div>
+              <p class="small text-secondary mb-3">
+                Pilih inisiatif ramah lingkungan yang diterapkan pada proses produksi, bahan baku, atau pengemasan usaha Anda. Tim kurator KADIN akan memverifikasi saat pendampingan.
+              </p>
+
+              <form id="praktikForm">
+                <div class="row g-2 mb-4">
+                  <div class="col-md-6">
+                    <div class="form-check p-2 border rounded">
+                      <input class="form-check-input ms-1" type="checkbox" value="bahan_baku_lokal" id="chk1" name="tags">
+                      <label class="form-check-label ms-2 small fw-semibold" for="chk1">
+                        Bahan Baku Lokal
+                        <small class="d-block text-muted fw-normal">Mengutamakan pasokan petani/pengrajin lokal DIY.</small>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-check p-2 border rounded">
+                      <input class="form-check-input ms-1" type="checkbox" value="kemasan_minim_plastik" id="chk2" name="tags">
+                      <label class="form-check-label ms-2 small fw-semibold" for="chk2">
+                        Kemasan Minim Plastik
+                        <small class="d-block text-muted fw-normal">Kertas kraft, besek bambu, atau daun alami.</small>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-check p-2 border rounded">
+                      <input class="form-check-input ms-1" type="checkbox" value="pewarna_alami" id="chk3" name="tags">
+                      <label class="form-check-label ms-2 small fw-semibold" for="chk3">
+                        Pewarna Alami
+                        <small class="d-block text-muted fw-normal">Pewarna nabati (indigo, secang, dsb).</small>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-check p-2 border rounded">
+                      <input class="form-check-input ms-1" type="checkbox" value="hemat_energi" id="chk4" name="tags">
+                      <label class="form-check-label ms-2 small fw-semibold" for="chk4">
+                        Efisiensi Energi
+                        <small class="d-block text-muted fw-normal">Pencahayaan alami, panel surya, atau alat hemat daya.</small>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-check p-2 border rounded">
+                      <input class="form-check-input ms-1" type="checkbox" value="organik_alami" id="chk5" name="tags">
+                      <label class="form-check-label ms-2 small fw-semibold" for="chk5">
+                        Organik & Non-Kimia
+                        <small class="d-block text-muted fw-normal">Bebas pestisida kimia berbahaya dan pengawet buatan.</small>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-check p-2 border rounded">
+                      <input class="form-check-input ms-1" type="checkbox" value="pengolahan_limbah" id="chk6" name="tags">
+                      <label class="form-check-label ms-2 small fw-semibold" for="chk6">
+                        Pengolahan Limbah
+                        <small class="d-block text-muted fw-normal">IPAL sederhana atau pemanfaatan sisa perca.</small>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="form-check p-2 border rounded">
+                      <input class="form-check-input ms-1" type="checkbox" value="zero_waste" id="chk7" name="tags">
+                      <label class="form-check-label ms-2 small fw-semibold" for="chk7">
+                        Sirkular & Zero Waste
+                        <small class="d-block text-muted fw-normal">Pemanfaatan kembali residu produksi menjadi produk sampingan bernilai ekonomis.</small>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" id="savePraktikBtn" class="btn btn-kadin-primary btn-sm px-4">
+                  <i class="bi bi-floppy me-1"></i> Simpan Pilihan Praktik Ramah Lingkungan
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Informasi Tingkatan Level -->
+          <div class="col-lg-5">
+            <div class="card-clean p-4 bg-light h-100">
+              <h6 class="fw-bold text-navy mb-3">Tingkatan Skor KADIN Lestari</h6>
+              
+              <div class="d-flex align-items-start gap-2 mb-3 pb-2 border-bottom">
+                <span class="badge-lestari badge-lestari-gold" style="font-size: 0.72rem;">Gold (80-100)</span>
+                <p class="small text-secondary mb-0">Prioritas utama promosi di etalase katalog B2B dan kemitraan pengadaan korporat.</p>
+              </div>
+
+              <div class="d-flex align-items-start gap-2 mb-3 pb-2 border-bottom">
+                <span class="badge-lestari badge-lestari-silver" style="font-size: 0.72rem;">Silver (50-79)</span>
+                <p class="small text-secondary mb-0">Standar mutu operasional solid dan telah menerapkan prinsip ramah lingkungan.</p>
+              </div>
+
+              <div class="d-flex align-items-start gap-2 mb-3">
+                <span class="badge-lestari badge-lestari-bronze" style="font-size: 0.72rem;">Bronze (0-49)</span>
+                <p class="small text-secondary mb-0">UMKM pada tahap akselerasi awal yang menjadi fokus pendampingan aktif kurator KADIN.</p>
+              </div>
+
+              <div class="alert alert-info py-2 px-3 small mt-3 mb-0">
+                <i class="bi bi-info-circle-fill me-1"></i> Skor dihitung ulang otomatis setiap hari oleh sistem KADIN Hub.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!auth.guard(['umkm'])) return;
+
+      document.getElementById('sidebar-container').innerHTML = ui.renderDashboardSidebar('skor-lestari');
+      document.getElementById('topbar-container').innerHTML = ui.renderDashboardTopbar('Skor KADIN Lestari');
+
+      loadSkorLestari();
+
+      // Form Submit
+      document.getElementById('praktikForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('savePraktikBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Menyimpan...';
+
+        const selectedTags = Array.from(document.querySelectorAll('input[name="tags"]:checked')).map(c => c.value);
+
+        try {
+          await api.post('/umkm/praktik-ramah-lingkungan', { tags: selectedTags });
+          ui.showAlert('Praktik ramah lingkungan berhasil disimpan dan Skor Lestari telah diperbarui!', 'success');
+          loadSkorLestari();
+        } catch (err) {
+          console.error('Error save praktik:', err);
+          ui.toast(err.message || 'Gagal menyimpan praktik ramah lingkungan.', 'danger');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="bi bi-floppy me-1"></i> Simpan Pilihan Praktik Ramah Lingkungan';
+        }
+      });
+    });
+
+    async function loadSkorLestari() {
+      try {
+        const res = await api.get('/umkm/skor-lestari');
+        const d = res.data;
+        const b = d.breakdown;
+
+        document.getElementById('scoreNumber').innerText = d.skor_lestari ?? 0;
+        document.getElementById('scoreLevelBadge').innerHTML = ui.renderLestariBadge(d.level, d.skor_lestari);
+        document.getElementById('headerBadgeLevel').innerHTML = ui.renderLestariBadge(d.level, d.skor_lestari);
+        document.getElementById('calcTime').innerText = `Terakhir dihitung: ${ui.formatDate(d.calculated_at)}`;
+
+        // Breakdown 1
+        document.getElementById('scoreKomp1Text').innerText = `${b.pertumbuhan_usaha.skor_mentah} / 100`;
+        document.getElementById('progressKomp1').style.width = `${b.pertumbuhan_usaha.skor_mentah}%`;
+        document.getElementById('detailKomp1').innerText = b.pertumbuhan_usaha.detail;
+
+        // Breakdown 2
+        document.getElementById('scoreKomp2Text').innerText = `${b.intensitas_pembinaan.skor_mentah} / 100`;
+        document.getElementById('progressKomp2').style.width = `${b.intensitas_pembinaan.skor_mentah}%`;
+        document.getElementById('detailKomp2').innerText = `${b.intensitas_pembinaan.detail} (${b.intensitas_pembinaan.sinyal_admin})`;
+
+        // Breakdown 3
+        document.getElementById('scoreKomp3Text').innerText = `${b.praktik_ramah_lingkungan.skor_mentah} / 100`;
+        document.getElementById('progressKomp3').style.width = `${b.praktik_ramah_lingkungan.skor_mentah}%`;
+        document.getElementById('detailKomp3').innerText = b.praktik_ramah_lingkungan.detail;
+
+        // Checkbox tags
+        const tags = b.praktik_ramah_lingkungan.tags || [];
+        document.querySelectorAll('input[name="tags"]').forEach(chk => {
+          chk.checked = tags.includes(chk.value);
+        });
+
+        // Verification Status Badge
+        const isVerif = b.praktik_ramah_lingkungan.terverifikasi;
+        document.getElementById('verifStatusBadge').innerHTML = isVerif ?
+          '<span class="badge bg-success bg-opacity-10 text-success border border-success"><i class="bi bi-patch-check-fill"></i> Terverifikasi Admin</span>' :
+          '<span class="badge bg-warning bg-opacity-10 text-warning border border-warning"><i class="bi bi-clock"></i> Belum Diverifikasi</span>';
+
+      } catch (err) {
+        console.error('Error load skor lestari:', err);
+        ui.showAlert('Gagal memuat Skor KADIN Lestari.', 'danger');
+      }
+    }
+  </script>
+</body>
+</html>

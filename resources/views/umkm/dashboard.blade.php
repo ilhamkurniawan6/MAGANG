@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard UMKM Binaan - KADIN Digital Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  @vite(['resources/css/kadin.css', 'resources/js/app.js'])
+</head>
+<body>
+
+  <div class="dashboard-wrapper">
+    <div id="sidebar-container"></div>
+
+    <div class="dashboard-main">
+      <div id="topbar-container"></div>
+
+      <main class="dashboard-content">
+        <div id="alert-container"></div>
+
+        <!-- Verification Banner Notification -->
+        <div id="verificationBanner" class="mb-4"></div>
+
+        <!-- Header Welcome -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+          <div>
+            <h1 class="h4 fw-bold text-navy mb-1">Selamat Datang, <span id="umkmNamaUsahaText">-</span></h1>
+            <p class="text-secondary small mb-0">Kelola profil usaha, skor keberlanjutan, dan katalog produk binaan Anda.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <a href="skor-lestari.html" class="btn btn-outline-success btn-sm px-3 d-flex align-items-center gap-1">
+              <i class="bi bi-shield-check"></i> Cek Skor Lestari
+            </a>
+            <a href="produk.html" class="btn btn-kadin-gold btn-sm px-3 d-flex align-items-center gap-1">
+              <i class="bi bi-plus-circle"></i> Tambah Produk
+            </a>
+          </div>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card h-100">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-secondary small fw-semibold">Skor KADIN Lestari</span>
+                <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="bi bi-tree-fill"></i></div>
+              </div>
+              <h3 class="fw-bold text-navy mb-1" id="statSkorLestari">0 / 100</h3>
+              <div id="statLestariLevel" class="mt-1">-</div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card h-100">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-secondary small fw-semibold">Produk Disetujui</span>
+                <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-check2-circle"></i></div>
+              </div>
+              <h3 class="fw-bold text-navy mb-1" id="statProdukDisetujui">0</h3>
+              <span class="small text-muted">Aktif di etalase publik</span>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card h-100">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-secondary small fw-semibold">Menunggu Moderasi</span>
+                <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-clock-history"></i></div>
+              </div>
+              <h3 class="fw-bold text-navy mb-1" id="statProdukPending">0</h3>
+              <span class="small text-muted">Sedang ditinjau admin</span>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-xl-3">
+            <div class="stat-card h-100">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-secondary small fw-semibold">Program Diikuti</span>
+                <div class="stat-icon bg-info bg-opacity-10 text-info"><i class="bi bi-mortarboard-fill"></i></div>
+              </div>
+              <h3 class="fw-bold text-navy mb-1" id="statProgramDiikuti">0</h3>
+              <a href="program.html" class="small text-primary text-decoration-none fw-semibold">Lihat program &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Informasi Profil & Quick Actions -->
+        <div class="row g-4 mb-4">
+          <div class="col-lg-7">
+            <div class="card-clean p-4 h-100">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-navy mb-0" style="font-size: 1rem;"><i class="bi bi-shop text-warning me-1"></i> Ringkasan Profil Usaha</h5>
+                <a href="profil.html" class="btn btn-sm btn-kadin-outline py-1 px-2" style="font-size: 0.8rem;">Edit Profil</a>
+              </div>
+              <div class="row g-3">
+                <div class="col-sm-6">
+                  <small class="text-secondary d-block">Sektor Usaha</small>
+                  <span class="fw-semibold text-navy" id="infoKategori">-</span>
+                </div>
+                <div class="col-sm-6">
+                  <small class="text-secondary d-block">Status Verifikasi</small>
+                  <span id="infoStatusBadge">-</span>
+                </div>
+                <div class="col-sm-6">
+                  <small class="text-secondary d-block">Nomor WhatsApp Bisnis</small>
+                  <span class="fw-semibold text-navy" id="infoKontak">-</span>
+                </div>
+                <div class="col-sm-6">
+                  <small class="text-secondary d-block">Email Usaha</small>
+                  <span class="fw-semibold text-navy" id="infoEmail">-</span>
+                </div>
+                <div class="col-12">
+                  <small class="text-secondary d-block mb-1">Praktik Ramah Lingkungan</small>
+                  <div id="infoPraktikContainer" class="d-flex flex-wrap gap-1">
+                    <span class="text-muted small">Belum mengklaim praktik</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="card-clean p-4 h-100 bg-light">
+              <h5 class="fw-bold text-navy mb-2" style="font-size: 1rem;"><i class="bi bi-lightning-charge-fill text-warning me-1"></i> Akselerasi Fase 2</h5>
+              <p class="small text-secondary mb-3">Optimalkan partisipasi ekosistem KADIN Kota Yogyakarta:</p>
+              
+              <div class="d-flex flex-column gap-2">
+                <a href="skor-lestari.html" class="p-3 bg-white rounded-3 border text-decoration-none text-dark d-flex align-items-center justify-content-between shadow-xs">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-success bg-opacity-10 text-success p-2 d-flex"><i class="bi bi-patch-check-fill fs-5"></i></div>
+                    <div>
+                      <div class="fw-bold text-navy" style="font-size: 0.9rem;">Skor KADIN Lestari</div>
+                      <small class="text-muted" style="font-size: 0.78rem;">Klaim praktik hijau & naikkan level</small>
+                    </div>
+                  </div>
+                  <i class="bi bi-chevron-right text-muted"></i>
+                </a>
+
+                <a href="program.html" class="p-3 bg-white rounded-3 border text-decoration-none text-dark d-flex align-items-center justify-content-between shadow-xs">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-primary bg-opacity-10 text-primary p-2 d-flex"><i class="bi bi-journal-bookmark-fill fs-5"></i></div>
+                    <div>
+                      <div class="fw-bold text-navy" style="font-size: 0.9rem;">Program & Pembinaan</div>
+                      <small class="text-muted" style="font-size: 0.78rem;">Daftar pelatihan & mentoring gratis</small>
+                    </div>
+                  </div>
+                  <i class="bi bi-chevron-right text-muted"></i>
+                </a>
+
+                <a href="peluang-bisnis.html" class="p-3 bg-white rounded-3 border text-decoration-none text-dark d-flex align-items-center justify-content-between shadow-xs">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-warning bg-opacity-10 text-warning p-2 d-flex"><i class="bi bi-briefcase-fill fs-5"></i></div>
+                    <div>
+                      <div class="fw-bold text-navy" style="font-size: 0.9rem;">Peluang Bisnis (RFQ)</div>
+                      <small class="text-muted" style="font-size: 0.78rem;">Tanggapi kebutuhan pengadaan B2B</small>
+                    </div>
+                  </div>
+                  <i class="bi bi-chevron-right text-muted"></i>
+                </a>
+              </div>
+            </div>
+        <!-- Rekomendasi Program Berbasis AI (Fase 3) -->
+        <div class="card-clean p-4 mb-4 border-start border-4 border-warning shadow-xs" id="aiRekomendasiSection" style="background: linear-gradient(135deg, #ffffff 0%, #fefcf3 100%);">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+              <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-stars"></i> Rekomendasi AI</span>
+              <h5 class="fw-bold text-navy mb-0" style="font-size: 1rem;">Program Pembinaan yang Dipersonalisasi</h5>
+            </div>
+            <a href="program.html" class="small text-primary text-decoration-none fw-semibold">Jelajahi Semua Program &rarr;</a>
+          </div>
+          <p class="text-secondary small mb-3">Sistem AI KADIN menganalisis profil sektor usaha dan Skor Lestari Anda untuk merekomendasikan program peningkatan kapasitas paling tepat sasaran:</p>
+          <div class="row g-3" id="aiRekomendasiCards">
+            <div class="col-12 text-center py-3">
+              <div class="spinner-border spinner-border-sm text-warning me-2"></div>
+              <span class="small text-muted">Memuat rekomendasi AI...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabel Produk Terakhir -->
+        <div class="card-clean p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-navy mb-0" style="font-size: 1rem;"><i class="bi bi-boxes text-warning me-1"></i> Produk Terbaru Usaha Anda</h5>
+            <a href="produk.html" class="btn btn-sm btn-kadin-outline py-1 px-2" style="font-size: 0.8rem;">Kelola Semua Produk</a>
+          </div>
+          <div class="table-responsive-clean">
+            <table class="table-clean">
+              <thead>
+                <tr>
+                  <th>Foto</th>
+                  <th>Nama Produk</th>
+                  <th>Kategori</th>
+                  <th>Harga</th>
+                  <th>Status Moderasi</th>
+                  <th class="text-end">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tableProdukUmkm">
+                <tr><td colspan="6" class="text-center py-4"><div class="spinner-border spinner-border-sm text-navy"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (!auth.guard(['umkm'])) return;
+
+      document.getElementById('sidebar-container').innerHTML = ui.renderDashboardSidebar('dashboard');
+      document.getElementById('topbar-container').innerHTML = ui.renderDashboardTopbar('Dashboard UMKM');
+
+      try {
+        const res = await api.get('/umkm/dashboard');
+        const d = res.data;
+        const u = d.umkm;
+
+        if (u) {
+          document.getElementById('umkmNamaUsahaText').innerText = u.nama_usaha;
+          document.getElementById('infoKategori').innerText = u.kategori?.nama_kategori || '-';
+          document.getElementById('infoStatusBadge').innerHTML = ui.renderBadge(u.status_verifikasi);
+          document.getElementById('infoKontak').innerText = u.kontak_wa || '-';
+          document.getElementById('infoEmail').innerText = u.email_usaha || '-';
+
+          // Verification banner
+          const vBanner = document.getElementById('verificationBanner');
+          if (u.status_verifikasi === 'pending') {
+            vBanner.innerHTML = `
+              <div class="alert alert-warning d-flex align-items-center shadow-xs" role="alert">
+                <i class="bi bi-clock-history fs-4 me-3 text-warning"></i>
+                <div>
+                  <strong>Profil Usaha Sedang Ditinjau Admin:</strong> Data registrasi Anda sedang diverifikasi oleh kurator KADIN Kota Yogyakarta. Produk Anda dapat diinput namun baru tayang di katalog setelah diverifikasi.
+                </div>
+              </div>
+            `;
+          } else if (u.status_verifikasi === 'rejected') {
+            vBanner.innerHTML = `
+              <div class="alert alert-danger d-flex align-items-center shadow-xs" role="alert">
+                <i class="bi bi-x-circle-fill fs-4 me-3 text-danger"></i>
+                <div>
+                  <strong>Pendaftaran Ditolak:</strong> ${u.catatan_verifikasi || 'Silakan lengkapi atau perbaiki profil usaha Anda.'}
+                  <a href="profil.html" class="alert-link ms-2">Perbaiki Profil &rarr;</a>
+                </div>
+              </div>
+            `;
+          }
+
+          // Skor Lestari
+          document.getElementById('statSkorLestari').innerText = `${u.skor_lestari || 0} / 100`;
+          document.getElementById('statLestariLevel').innerHTML = ui.renderLestariBadge(u.level_lestari);
+
+          // Praktik ramah lingkungan
+          const pContainer = document.getElementById('infoPraktikContainer');
+          if (u.praktik_ramah_lingkungan && u.praktik_ramah_lingkungan.length > 0) {
+            pContainer.innerHTML = u.praktik_ramah_lingkungan.map(p => ui.renderTagPraktik(p)).join('');
+          } else {
+            pContainer.innerHTML = '<span class="text-muted small">Belum mengklaim praktik ramah lingkungan.</span>';
+          }
+        }
+
+        // Load AI Program Recommendations (Fase 3)
+        try {
+          const aiRes = await api.get('/umkm/rekomendasi-program');
+          const aiRecs = aiRes.data || [];
+          const recContainer = document.getElementById('aiRekomendasiCards');
+
+          if (aiRecs.length > 0) {
+            recContainer.innerHTML = aiRecs.map(r => {
+              const p = r.program;
+              return `
+                <div class="col-md-4">
+                  <div class="card h-100 border rounded-3 p-3 shadow-xs bg-white d-flex flex-column justify-content-between">
+                    <div>
+                      <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge bg-primary bg-opacity-10 text-primary fw-semibold">${p.jenis || 'Pelatihan'}</span>
+                        <span class="small text-muted" style="font-size: 0.75rem;"><i class="bi bi-calendar3 me-1"></i>${p.tanggal_mulai ? p.tanggal_mulai.substring(0, 10) : '-'}</span>
+                      </div>
+                      <h6 class="fw-bold text-navy mb-2" style="font-size: 0.95rem;">${p.judul}</h6>
+                      <div class="p-2 rounded bg-light border-start border-3 border-warning mb-3">
+                        <small class="text-dark d-block fw-semibold" style="font-size: 0.78rem;"><i class="bi bi-magic text-warning me-1"></i> Alasan AI:</small>
+                        <small class="text-secondary" style="font-size: 0.76rem;">${r.alasan}</small>
+                      </div>
+                    </div>
+                    <button class="btn btn-sm btn-kadin-gold w-100 py-1" onclick="daftarProgram(${p.id})">
+                      <i class="bi bi-check-circle me-1"></i> Daftar Program
+                    </button>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          } else {
+            recContainer.innerHTML = `
+              <div class="col-12">
+                <div class="alert alert-light border text-center py-3 mb-0 small text-secondary">
+                  Saat ini belum ada program baru yang tersedia untuk diikuti.
+                </div>
+              </div>
+            `;
+          }
+        } catch (aiErr) {
+          console.error('Error fetching AI recommendations:', aiErr);
+          document.getElementById('aiRekomendasiCards').innerHTML = `
+            <div class="col-12">
+              <div class="alert alert-light border text-center py-2 mb-0 small text-muted">
+                Jelajahi program terbaru di menu Program & Pembinaan.
+              </div>
+            </div>
+          `;
+        }
+
+        // Stats Produk
+        document.getElementById('statProdukDisetujui').innerText = d.produk_stats?.disetujui || 0;
+        document.getElementById('statProdukPending').innerText = d.produk_stats?.menunggu_moderasi || 0;
+
+        // Program Diikuti
+        try {
+          const progRes = await api.get('/umkm/program');
+          const myProg = (progRes.data || []).filter(p => p.peserta_status);
+          document.getElementById('statProgramDiikuti').innerText = myProg.length;
+        } catch (e) {
+          document.getElementById('statProgramDiikuti').innerText = '0';
+        }
+
+        // Recent Produk Table
+        const pTable = document.getElementById('tableProdukUmkm');
+        if (d.recent_produk && d.recent_produk.length > 0) {
+          pTable.innerHTML = d.recent_produk.map(p => `
+            <tr>
+              <td>
+                ${p.foto_produk ? 
+                  `<img src="${p.foto_url || p.foto_produk}" class="rounded border object-fit-cover" style="width: 44px; height: 44px;" alt="foto">` :
+                  `<div class="rounded bg-light border d-flex align-items-center justify-content-center text-muted" style="width: 44px; height: 44px;"><i class="bi bi-image"></i></div>`
+                }
+              </td>
+              <td class="fw-semibold text-navy">${p.nama_produk}</td>
+              <td><span class="badge bg-light text-dark border">${p.kategori?.nama_kategori || '-'}</span></td>
+              <td class="fw-bold text-navy">${ui.formatRupiah(p.harga)}</td>
+              <td>${ui.renderBadge(p.status)}</td>
+              <td class="text-end">
+                <a href="produk.html" class="btn btn-sm btn-kadin-outline py-1 px-2" style="font-size: 0.78rem;">Kelola</a>
+              </td>
+            </tr>
+          `).join('');
+        } else {
+          pTable.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">Belum ada produk yang ditambahkan.</td></tr>';
+        }
+
+      } catch (err) {
+        console.error('Error loading UMKM dashboard:', err);
+        ui.showAlert('Gagal memuat data dashboard.', 'danger');
+      }
+    });
+
+    window.daftarProgram = async (programId) => {
+      if (!(await ui.confirm('Apakah Anda yakin ingin mendaftar ke program ini?', {
+        title: 'Daftar Program', confirmText: 'Ya, daftar'
+      }))) return;
+      try {
+        await api.post(`/umkm/program/${programId}/daftar`);
+        ui.showAlert('Pendaftaran program berhasil dikirim!', 'success');
+        setTimeout(() => location.reload(), 1200);
+      } catch (err) {
+        ui.showAlert(err.data?.message || 'Gagal mendaftar program.', 'danger');
+      }
+    };
+  </script>
+</body>
+</html>

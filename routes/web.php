@@ -4,60 +4,56 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes (KAADIN Unified Frontend & Backend)
+| Web Routes
 |--------------------------------------------------------------------------
 |
-| Rute web menyajikan portal publik, dashboard UMKM, Buyer, dan Admin
-| yang kini telah disatukan ke dalam direktori public/.
+| Setiap halaman berada di resources/views/*.blade.php.
+| Setiap halaman bisa diakses lewat URL bersih (/katalog) maupun URL lama
+| berakhiran .html (/katalog.html), karena link di HTML & JS masih memakai .html.
 |
 */
 
-// Halaman Beranda (Landing Page)
-Route::get('/', function () {
-    return response()->file(public_path('index.html'));
-});
+Route::get('/', fn () => view('index'));
 
-// Pemetaan Clean URL ke file HTML statis
-$cleanRoutes = [
+// uri => nama view
+$halaman = [
     // Publik
-    'katalog' => 'katalog.html',
-    'login' => 'login.html',
-    'register-umkm' => 'register-umkm.html',
-    'program' => 'program.html',
-    'produk-detail' => 'produk-detail.html',
-    'umkm-detail' => 'umkm-detail.html',
+    'index' => 'index',
+    'katalog' => 'katalog',
+    'login' => 'login',
+    'register-umkm' => 'register-umkm',
+    'program' => 'program',
+    'produk-detail' => 'produk-detail',
+    'umkm-detail' => 'umkm-detail',
 
     // Admin
-    'admin' => 'admin/dashboard.html',
-    'admin/dashboard' => 'admin/dashboard.html',
-    'admin/moderasi-produk' => 'admin/moderasi-produk.html',
-    'admin/peluang-bisnis' => 'admin/peluang-bisnis.html',
-    'admin/program' => 'admin/program.html',
-    'admin/skor-lestari' => 'admin/skor-lestari.html',
-    'admin/verifikasi-umkm' => 'admin/verifikasi-umkm.html',
-    'admin/wa-bot-simulator' => 'admin/wa-bot-simulator.html',
+    'admin/dashboard' => 'admin.dashboard',
+    'admin/moderasi-produk' => 'admin.moderasi-produk',
+    'admin/peluang-bisnis' => 'admin.peluang-bisnis',
+    'admin/program' => 'admin.program',
+    'admin/skor-lestari' => 'admin.skor-lestari',
+    'admin/verifikasi-umkm' => 'admin.verifikasi-umkm',
+    'admin/wa-bot-simulator' => 'admin.wa-bot-simulator',
 
     // Buyer
-    'buyer' => 'buyer/dashboard.html',
-    'buyer/dashboard' => 'buyer/dashboard.html',
-    'buyer/peluang-bisnis' => 'buyer/peluang-bisnis.html',
+    'buyer/dashboard' => 'buyer.dashboard',
+    'buyer/peluang-bisnis' => 'buyer.peluang-bisnis',
 
     // UMKM
-    'umkm' => 'umkm/dashboard.html',
-    'umkm/dashboard' => 'umkm/dashboard.html',
-    'umkm/produk' => 'umkm/produk.html',
-    'umkm/profil' => 'umkm/profil.html',
-    'umkm/program' => 'umkm/program.html',
-    'umkm/skor-lestari' => 'umkm/skor-lestari.html',
-    'umkm/peluang-bisnis' => 'umkm/peluang-bisnis.html',
+    'umkm/dashboard' => 'umkm.dashboard',
+    'umkm/produk' => 'umkm.produk',
+    'umkm/profil' => 'umkm.profil',
+    'umkm/program' => 'umkm.program',
+    'umkm/skor-lestari' => 'umkm.skor-lestari',
+    'umkm/peluang-bisnis' => 'umkm.peluang-bisnis',
 ];
 
-foreach ($cleanRoutes as $uri => $file) {
-    Route::get($uri, function () use ($file) {
-        $path = public_path($file);
-        if (file_exists($path)) {
-            return response()->file($path);
-        }
-        abort(404);
-    });
+foreach ($halaman as $uri => $view) {
+    Route::view($uri, $view);
+    Route::view($uri.'.html', $view);
 }
+
+// Pintasan ke dashboard tiap peran
+Route::redirect('/admin', '/admin/dashboard.html');
+Route::redirect('/buyer', '/buyer/dashboard.html');
+Route::redirect('/umkm', '/umkm/dashboard.html');

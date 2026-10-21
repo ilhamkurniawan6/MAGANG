@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masuk Sistem - KADIN Digital Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  @vite(['resources/css/kadin.css', 'resources/js/app.js'])
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+  <!-- Navbar Simple -->
+  <nav class="navbar public-navbar">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <i class="bi bi-shield-shaded text-warning fs-3"></i>
+        <div>
+          <div class="fw-bold text-navy lh-1" style="font-size: 1.15rem; color: var(--kadin-navy);">KADIN DIGITAL HUB</div>
+          <small class="text-secondary" style="font-size: 0.7rem; letter-spacing: 0.05em;">KOTA YOGYAKARTA</small>
+        </div>
+      </a>
+      <a href="index.html" class="btn btn-sm btn-kadin-outline"><i class="bi bi-arrow-left"></i> Kembali ke Beranda</a>
+    </div>
+  </nav>
+
+  <main class="container my-auto py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-5">
+        
+        <div class="card-clean p-4 p-md-5 bg-white">
+          <div class="text-center mb-4">
+            <div class="rounded-circle bg-light d-inline-flex p-3 text-navy mb-2" style="color: var(--kadin-navy);">
+              <i class="bi bi-person-circle fs-1"></i>
+            </div>
+            <h1 class="h4 fw-bold text-navy mb-1">Masuk ke Akun</h1>
+            <p class="text-secondary small mb-0">Satu pintu masuk untuk Administrator, Pelaku UMKM, dan Buyer Mitra.</p>
+          </div>
+
+          <div id="alert-container"></div>
+
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="emailInput" class="form-label small fw-semibold text-secondary">Alamat Email</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-envelope text-muted"></i></span>
+                <input type="email" class="form-control border-start-0" id="emailInput" placeholder="nama@domain.com" required autocomplete="email">
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="passwordInput" class="form-label small fw-semibold text-secondary">Kata Sandi</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-lock text-muted"></i></span>
+                <input type="password" class="form-control border-start-0" id="passwordInput" placeholder="••••••••" required autocomplete="current-password">
+              </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-kadin-primary w-100 py-2 fw-bold">
+              Masuk Sekarang <i class="bi bi-box-arrow-in-right ms-1"></i>
+            </button>
+          </form>
+
+          <div class="text-center mt-4 pt-3 border-top">
+            <p class="small text-secondary mb-1">Belum memiliki akun UMKM Binaan?</p>
+            <a href="register-umkm.html" class="fw-bold text-navy text-decoration-none hover-gold" style="color: var(--kadin-navy);">
+              Daftar Mandiri UMKM Sekarang &rarr;
+            </a>
+          </div>
+
+          <!-- Quick Fill Demo Accounts -->
+          <div class="mt-4 p-3 bg-light rounded-3 border">
+            <div class="small fw-bold text-navy mb-2"><i class="bi bi-lightning-charge-fill text-warning"></i> Akun Uji Coba Demo:</div>
+            <div class="d-flex flex-wrap gap-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size: 0.75rem;" onclick="fillLogin('admin@kadin-jogja.id', 'password')">Admin KADIN</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size: 0.75rem;" onclick="fillLogin('umkm.batik@example.com', 'password')">UMKM Verified</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size: 0.75rem;" onclick="fillLogin('umkm.baru@example.com', 'password')">UMKM Pending</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" style="font-size: 0.75rem;" onclick="fillLogin('buyer@partner.com', 'password')">Buyer Mitra</button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-3 text-secondary small">
+    &copy; 2026 KADIN Kota Yogyakarta
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function fillLogin(email, password) {
+      document.getElementById('emailInput').value = email;
+      document.getElementById('passwordInput').value = password;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Jika sudah login, langsung arahkan ke dashboard yang sesuai
+      if (auth.isAuthenticated()) {
+        const user = auth.getUser();
+        window.location.href = auth.getDashboardUrl(user?.role?.nama_role);
+      }
+
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('emailInput').value;
+        const password = document.getElementById('passwordInput').value;
+        const btn = document.getElementById('submitBtn');
+
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+
+        try {
+          const res = await auth.login(email, password);
+          ui.showAlert('Login berhasil! Mengalihkan ke dashboard...', 'success');
+          
+          setTimeout(() => {
+            const roleName = res.user?.role?.nama_role;
+            window.location.href = auth.getDashboardUrl(roleName);
+          }, 800);
+
+        } catch (err) {
+          console.error('Login error:', err);
+          ui.showAlert(err.message || 'Email atau kata sandi tidak valid.', 'danger');
+          btn.disabled = false;
+          btn.innerHTML = 'Masuk Sekarang <i class="bi bi-box-arrow-in-right ms-1"></i>';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -15,7 +15,7 @@ class UmkmHubTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->seed();
+        $this->seed(\Database\Seeders\DemoSeeder::class);
     }
 
     public function test_umkm_user_can_view_own_profile_and_dashboard(): void

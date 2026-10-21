@@ -43,6 +43,23 @@ return [
             'root' => storage_path('app/public'),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
+            // Set MINIO_USE_ACL=false untuk Cloudflare R2 (tidak mendukung ACL)
+            'use_acl' => env('MINIO_USE_ACL', true),
+            'throw' => false,
+            'report' => false,
+        ],
+
+        // MinIO (S3-compatible). Aktif otomatis bila MINIO_ENDPOINT, MINIO_KEY, dan MINIO_BUCKET terisi.
+        'minio' => [
+            'driver' => 's3',
+            'key' => env('MINIO_KEY'),
+            'secret' => env('MINIO_SECRET'),
+            'region' => env('MINIO_REGION', 'us-east-1'),
+            'bucket' => env('MINIO_BUCKET'),
+            'url' => env('MINIO_URL') ?: null,
+            'endpoint' => env('MINIO_ENDPOINT'),
+            'use_path_style_endpoint' => true,
+            'visibility' => 'public',
             'throw' => false,
             'report' => false,
         ],
